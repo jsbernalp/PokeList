@@ -56,5 +56,14 @@ dependencies {
     implementation "com.google.dagger:dagger-android:$daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
+    //Lifecycle
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifeCycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifeCycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifeCycleVersion"
+
+
+    implementation "android.arch.navigation:navigation-fragment:${navigationVersion}"
+    implementation "androidx.legacy:legacy-support-v4:${legacySupportVersion}"
 
 }
