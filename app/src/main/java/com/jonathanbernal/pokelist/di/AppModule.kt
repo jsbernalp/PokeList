@@ -3,8 +3,12 @@ package com.jonathanbernal.pokelist.di
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider
+import com.jonathanbernal.pokelist.network.PokeApiService
+import com.jonathanbernal.pokelist.viewmodel.PokemonViewModelFactory
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,12 +31,13 @@ object AppModule {
     @JvmStatic
     fun provideApplication(application: PokeApplication): Application = application
 
+
     @Singleton
     @Provides
     @JvmStatic
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/movie/")
+            .baseUrl("http://pokeapi.co/api/v2/")
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
@@ -66,5 +71,23 @@ object AppModule {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         return interceptor
     }
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun providePokeApiService(retrofit: Retrofit): PokeApiService {
+        return retrofit.create(PokeApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun providesCompositeDisposable(): CompositeDisposable = CompositeDisposable()
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun providePokemonViewModelFactory(factory: PokemonViewModelFactory): ViewModelProvider.Factory = factory
+
 
 }
