@@ -63,13 +63,17 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata:$lifeCycleVersion"
 
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+
 
     //DAGGER2
-    kapt "com.google.dagger:dagger-compiler:2.19"
-    kapt "com.google.dagger:dagger-android-processor:2.19"
-    implementation "com.google.dagger:dagger:2.19"
-    implementation "com.google.dagger:dagger-android:2.19"
-    implementation "com.google.dagger:dagger-android-support:2.19"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
 
     implementation "android.arch.navigation:navigation-fragment:$navigationVersion"
