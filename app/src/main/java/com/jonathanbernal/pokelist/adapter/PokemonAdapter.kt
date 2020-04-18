@@ -1,41 +1,55 @@
 package com.jonathanbernal.pokelist.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.jonathanbernal.pokelist.R
+import com.jonathanbernal.pokelist.BR
 import com.jonathanbernal.pokelist.model.Pokemon
+import com.jonathanbernal.pokelist.viewmodel.PokeViewModel
 
-class PokemonAdapter :RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
+class PokemonAdapter internal constructor(var pokeViewModel: PokeViewModel, var resource:Int):RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
 
-    var pokemonList = ArrayList<Pokemon>()
-
-    fun addPokemons(pokemonList: MutableList<Pokemon>) {
-        this.pokemonList.addAll(pokemonList)
-        notifyDataSetChanged()
-    }
+    protected var pokemons: List<Pokemon> = mutableListOf()
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_pokemon,parent,false)
-        return ViewHolder(view)
-    }
-
-    override fun getItemCount(): Int {
-        return pokemonList.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        var layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
+        var binding:ViewDataBinding = DataBindingUtil.inflate(layoutInflater, viewType, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val pokemon = pokemonList[position]
-        holder.name.text = pokemon.name
+        holder.setPokemonCard(pokeViewModel,position)
     }
 
-    class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-        internal var name: TextView
+    override fun getItemViewType(position: Int): Int {
+        return getLayoutIdForPosition(position)
+    }
+
+    fun getLayoutIdForPosition(position: Int): Int {
+        return resource
+    }
+
+    override fun getItemCount(): Int {
+        return pokemons.size
+    }
+
+    fun setPokemonList(pokemons: List<Pokemon>){
+        this.pokemons = pokemons
+    }
+
+    class ViewHolder(binding: ViewDataBinding):RecyclerView.ViewHolder(binding.root){
+        private var binding:ViewDataBinding? = null
         init {
-            name = itemView.findViewById(R.id.name_pokemon)
+            this.binding = binding
         }
+            fun setPokemonCard(pokeViewModel:PokeViewModel,position: Int){
+                binding?.setVariable(BR.itemPokemon,pokeViewModel)
+                binding?.setVariable(BR.position,position)
+                binding?.executePendingBindings()
+            }
+
     }
 }
