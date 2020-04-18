@@ -2,13 +2,13 @@ package com.jonathanbernal.pokelist.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.jonathanbernal.pokelist.R
 import com.jonathanbernal.pokelist.adapter.PokemonAdapter
+import com.jonathanbernal.pokelist.databinding.ActivityMainBinding
 import com.jonathanbernal.pokelist.model.PokemonResponse
 import com.jonathanbernal.pokelist.viewmodel.PokeViewModel
 import com.jonathanbernal.pokelist.viewmodel.PokemonViewModelFactory
@@ -28,26 +28,38 @@ class MainActivity : AppCompatActivity(),HasSupportFragmentInjector{
     @Inject
     lateinit var pokeViewModel: PokeViewModel
 
+    private lateinit var binding: ActivityMainBinding
 
-    private val adapter = PokemonAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val recyclerPokemon = findViewById<RecyclerView>(R.id.recyclerPokemon)
-        recyclerPokemon.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
 
-        pokeViewModel = ViewModelProviders.of(this,pokemonViewModelFactory).get(pokeViewModel::class.java)
+        setupBinding(savedInstanceState)
 
-        pokeViewModel.pokemons.observe(this,Observer<PokemonResponse>{
-            adapter.addPokemons(it.results)
-        })
-
-        recyclerPokemon.adapter = adapter
+        observerLiveData()
 
     }
+
+    private fun setupBinding(savedInstanceState: Bundle?) {
+
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        pokeViewModel = ViewModelProviders.of(this,pokemonViewModelFactory).get(pokeViewModel::class.java)
+        binding.pokeList = pokeViewModel
+        pokeViewModel.getPokemons()
+        binding.root
+    }
+
+
+    private fun observerLiveData() {
+        pokeViewModel.pokemons.observe(this,Observer<PokemonResponse>{
+            pokeViewModel.setPokemonsInRecyclerAdapter(it.results)
+        })
+    }
+
+
 
 
 
