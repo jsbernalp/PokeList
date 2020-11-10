@@ -1,12 +1,8 @@
-package com.jonathanbernal.pokelist.network
+package com.jonathanbernal.domain.repository
 
 import com.jonathanbernal.domain.model.PokemonResponse
 import io.reactivex.Observable
-import retrofit2.http.GET
 
-interface PokeApiService {
-
-    @GET("pokemon")
+interface PokemonRepository {
     fun getPokeList(): Observable<PokemonResponse>
-
 }
