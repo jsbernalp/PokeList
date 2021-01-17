@@ -38,6 +38,7 @@ class PokemonAdapter internal constructor(var pokeViewModel: PokeViewModel, var 
 
     fun setPokemonList(pokemons: List<Pokemon>){
         this.pokemons = pokemons
+        notifyDataSetChanged()
     }
 
     class ViewHolder(binding: ViewDataBinding):RecyclerView.ViewHolder(binding.root){

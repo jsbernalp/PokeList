@@ -49,17 +49,9 @@ class PokeViewModel @Inject constructor(
         }
     }
 
-//    fun getPokemons(){
-//        repository.requestPokemon({
-//            pokemons.postValue(it)
-//        },{
-//            error.postValue(it)
-//        })
-//    }
 
     fun setPokemonsInRecyclerAdapter(pokemons: List<Pokemon>) {
         adapter?.setPokemonList(pokemons)
-        adapter?.notifyDataSetChanged()
     }
 
     fun getRecyclerPokemonAdapter(): PokemonAdapter?{

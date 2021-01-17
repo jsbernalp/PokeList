@@ -3,7 +3,6 @@ package com.jonathanbernal.domain.usecase
 import com.jonathanbernal.domain.model.Pokemon
 import com.jonathanbernal.domain.repository.PokemonRepository
 import io.reactivex.Observable
-import io.reactivex.Single
 import javax.inject.Inject
 
 class GetPokemonListUseCase @Inject constructor(private val pokemonRepository: PokemonRepository){
