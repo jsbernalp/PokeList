@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.jonathanbernal.pokelist.BR
-import com.jonathanbernal.pokelist.model.Pokemon
+import com.jonathanbernal.domain.model.Pokemon
 import com.jonathanbernal.pokelist.viewmodel.PokeViewModel
 
 class PokemonAdapter internal constructor(var pokeViewModel: PokeViewModel, var resource:Int):RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
@@ -38,6 +38,7 @@ class PokemonAdapter internal constructor(var pokeViewModel: PokeViewModel, var 
 
     fun setPokemonList(pokemons: List<Pokemon>){
         this.pokemons = pokemons
+        notifyDataSetChanged()
     }
 
     class ViewHolder(binding: ViewDataBinding):RecyclerView.ViewHolder(binding.root){

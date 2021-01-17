@@ -1,6 +1,6 @@
 package com.jonathanbernal.pokelist.repository
 
-import com.jonathanbernal.pokelist.model.PokemonResponse
+import com.jonathanbernal.domain.model.PokemonResponse
 import com.jonathanbernal.pokelist.network.ApiObserver
 import com.jonathanbernal.pokelist.network.PokeApiService
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +12,7 @@ class PokeRepository @Inject constructor(
     private var pokeApiService: PokeApiService,
     private var compositeDisposable: CompositeDisposable
 ){
-    fun requestPokemon(onResult:(PokemonResponse)->Unit,onError:(Throwable) -> Unit){
+    fun requestPokemon(onResult:(PokemonResponse)->Unit, onError:(Throwable) -> Unit){
         pokeApiService.getPokeList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

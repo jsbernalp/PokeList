@@ -4,6 +4,11 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.jonathanbernal.data.PokemonApi
+import com.jonathanbernal.data.PokemonEndPoint
+import com.jonathanbernal.data.mapper.PokemonMapper
+import com.jonathanbernal.data.repository.PokemonRepositoryImpl
+import com.jonathanbernal.domain.repository.PokemonRepository
 import com.jonathanbernal.pokelist.network.PokeApiService
 import com.jonathanbernal.pokelist.viewmodel.PokemonViewModelFactory
 import dagger.Module
@@ -79,6 +84,15 @@ object AppModule {
         return retrofit.create(PokeApiService::class.java)
     }
 
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun providePokeApiEndpointService(retrofit: Retrofit): PokemonEndPoint {
+        return retrofit.create(PokemonEndPoint::class.java)
+    }
+
+
     @Provides
     @Singleton
     @JvmStatic
@@ -88,6 +102,13 @@ object AppModule {
     @Singleton
     @JvmStatic
     fun providePokemonViewModelFactory(factory: PokemonViewModelFactory): ViewModelProvider.Factory = factory
+
+    @Provides
+    @Singleton
+    @JvmStatic
+    fun providePokemonRepository(pokemonApi: PokemonApi, pokemonMapper: PokemonMapper): PokemonRepository {
+        return PokemonRepositoryImpl(pokemonApi, pokemonMapper)
+    }
 
 
 }

@@ -1,3 +1,3 @@
-package com.jonathanbernal.pokelist.model
+package com.jonathanbernal.domain.model
 
 data class Pokemon(val name:String, val url:String)
