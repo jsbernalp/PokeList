@@ -2,7 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        
         <variable
             name="position"
             type="Integer" />
@@ -26,6 +25,7 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:text="@{itemPokemon.getPokemonAt(position).name}"
+            android:onClick="@{()->itemPokemon.onClickItem(position)}"
             android:padding="10dp" />
 
     </androidx.cardview.widget.CardView>

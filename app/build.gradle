@@ -86,4 +86,6 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment:$navigationVersion"
     implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
 
+    implementation "com.ramotion.foldingcell:folding-cell:$foldingCellVersion"
+
 }
