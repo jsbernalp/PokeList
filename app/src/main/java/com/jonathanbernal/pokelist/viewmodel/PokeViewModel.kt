@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import com.jonathanbernal.pokelist.R
 import com.jonathanbernal.pokelist.adapter.PokemonAdapter
 import com.jonathanbernal.domain.model.Pokemon
+import com.jonathanbernal.domain.model.PokemonAbilitiesResponse
 import com.jonathanbernal.domain.usecase.GetPokemonListUseCase
 import com.jonathanbernal.domain.usecase.GetPokemonUseCase
 import com.jonathanbernal.pokelist.ext.addTo
@@ -42,17 +43,22 @@ class PokeViewModel @Inject constructor(
             .addTo(disposables)
     }
 
-    fun getPokemonData(name:String){
-        getPokemonUseCase.execute(name)
+    fun getPokemonData(pokemon: Pokemon, position: Int){
+        getPokemonUseCase.execute(pokemon.name)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { handleGetPokemonResult(it) }
+            .subscribe { handleGetPokemonResult(it,pokemon,position) }
             .addTo(disposables)
     }
 
-    private fun handleGetPokemonResult(result: GetPokemonUseCase.Result?) {
+    private fun handleGetPokemonResult(
+        result: GetPokemonUseCase.Result?,
+        pokemon: Pokemon,
+        position: Int
+    ) {
         when(result){
             is GetPokemonUseCase.Result.Success-> {
+                updateItem(result.pokemon as PokemonAbilitiesResponse, pokemon,position)
                 Log.e("PokemonViewModel", "pokemon ${result.pokemon.sprites}")
             }
             is GetPokemonUseCase.Result.Failure -> {
@@ -73,6 +79,11 @@ class PokeViewModel @Inject constructor(
         }
     }
 
+    fun updateItem(pokemonAbilitiesResponse: PokemonAbilitiesResponse, pokemon: Pokemon, position: Int) {
+        val pokemonData = Pokemon(pokemonAbilitiesResponse.name,pokemon.url, pokemonAbilitiesResponse.sprites.other.dream_world.front_default)
+        adapter?.updatePokemon(pokemonData)
+        adapter?.notifyItemChanged(position)
+    }
 
     fun setPokemonsInRecyclerAdapter(pokemons: List<Pokemon>) {
         adapter?.setPokemonList(pokemons)
@@ -88,15 +99,20 @@ class PokeViewModel @Inject constructor(
         return pokemons.value?.get(position)
     }
 
+    fun getImagePokemon(position: Int):Pokemon?{
+        val pokemons: MutableLiveData<List<Pokemon>> = pokemons
+        return pokemons.value?.get(position)
+    }
+
     fun onClickItem(position: Int){
         val pokemons: MutableLiveData<List<Pokemon>> = pokemons
         val pokemonItem = pokemons.value?.get(position)
-        pokemonItem?.let { getPokemonData(it) }
+        pokemonItem?.let { getPokemon(it,position) }
     }
 
-    private fun getPokemonData(pokemonItem: Pokemon) {
+    private fun getPokemon(pokemonItem: Pokemon, position: Int) {
         Toast.makeText(context,"Datos del pokemon seleccionado ${pokemonItem.name}",Toast.LENGTH_LONG).show()
-        getPokemonData(pokemonItem.name)
+        getPokemonData(pokemonItem,position)
     }
 
     override fun onCleared() {
