@@ -80,7 +80,8 @@ class PokeViewModel @Inject constructor(
     }
 
     fun updateItem(pokemonAbilitiesResponse: PokemonAbilitiesResponse, pokemon: Pokemon, position: Int) {
-        val pokemonData = Pokemon(pokemonAbilitiesResponse.name,pokemon.url, pokemonAbilitiesResponse.sprites.other.dream_world.front_default)
+        val url = pokemonAbilitiesResponse.sprites.other.dream_world.front_default.replace("/dream-world/","/official-artwork/").replace(".svg",".png")
+        val pokemonData = Pokemon(pokemonAbilitiesResponse.name,pokemon.url, url)
         adapter?.updatePokemon(pokemonData)
         adapter?.notifyItemChanged(position)
     }
@@ -98,6 +99,8 @@ class PokeViewModel @Inject constructor(
         val pokemons: MutableLiveData<List<Pokemon>> = pokemons
         return pokemons.value?.get(position)
     }
+
+
 
     fun getImagePokemon(position: Int):Pokemon?{
         val pokemons: MutableLiveData<List<Pokemon>> = pokemons
