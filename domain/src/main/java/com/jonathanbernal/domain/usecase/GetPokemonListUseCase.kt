@@ -18,7 +18,6 @@ class GetPokemonListUseCase @Inject constructor(private val pokemonRepository: P
             .map { Result.Success(it.results) as Result}
             .onErrorReturn { Result.Failure(it) }
             .startWith(Result.Loading)
-
     }
 
 }

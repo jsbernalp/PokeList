@@ -13,7 +13,8 @@ class PokemonMapper @Inject constructor(){
     private fun map(response: Pokemon):Pokemon {
         return Pokemon(
             name = response.name,
-            url = response.url
+            url = response.url,
+            urlImage = response.urlImage
         )
     }
 
