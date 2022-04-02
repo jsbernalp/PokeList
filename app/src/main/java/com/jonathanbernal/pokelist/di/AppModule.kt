@@ -13,6 +13,8 @@ import com.jonathanbernal.pokelist.network.PokeApiService
 import com.jonathanbernal.pokelist.viewmodel.PokemonViewModelFactory
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -24,22 +26,12 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Singleton
-    @Provides
-    @JvmStatic
-    fun provideContext(application: PokeApplication): Context = application.applicationContext
 
     @Singleton
     @Provides
-    @JvmStatic
-    fun provideApplication(application: PokeApplication): Application = application
-
-
-    @Singleton
-    @Provides
-    @JvmStatic
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("http://pokeapi.co/api/v2/")
@@ -52,7 +44,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideOkhttpClient(interceptor: Interceptor): OkHttpClient {
         val okHttpClientBuilder = OkHttpClient.Builder()
 
@@ -66,7 +57,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun provideLoggingInterceptor(): Interceptor {
         val interceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger{
             override fun log(message: String) {
@@ -79,7 +69,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun providePokeApiService(retrofit: Retrofit): PokeApiService {
         return retrofit.create(PokeApiService::class.java)
     }
@@ -87,7 +76,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun providePokeApiEndpointService(retrofit: Retrofit): PokemonEndPoint {
         return retrofit.create(PokemonEndPoint::class.java)
     }
@@ -95,19 +83,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    @JvmStatic
     fun providesCompositeDisposable(): CompositeDisposable = CompositeDisposable()
 
     @Provides
     @Singleton
-    @JvmStatic
     fun providePokemonViewModelFactory(factory: PokemonViewModelFactory): ViewModelProvider.Factory = factory
 
     @Provides
     @Singleton
-    @JvmStatic
     fun providePokemonRepository(pokemonApi: PokemonApi, pokemonMapper: PokemonMapper): PokemonRepository {
-        return PokemonRepositoryImpl(pokemonApi, pokemonMapper)
+        return PokemonRepositoryImpl(pokemonApi)
     }
 
 
