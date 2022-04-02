@@ -8,12 +8,30 @@ apply plugin: "kotlin-kapt"
 
 apply plugin: 'dagger.hilt.android.plugin'
 
+ext {
+    pokedexVersionCode = 1
+    pokedexVersionName = "1.0.0"
+
+    pokelistVersionCode = 1
+    pokelistVersionName = '1.0.0'
+
+    QAVersion = 1
+}
+
 
 android {
+
+
+    signingConfigs {
+        release {
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+
     compileSdkVersion 31
     buildToolsVersion "30.0.1"
     defaultConfig {
@@ -24,18 +42,45 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
+    flavorDimensions 'type'
+    productFlavors {
+        pokelist {
+            dimension 'type'
+            versionCode pokelistVersionCode
+            versionName pokelistVersionName
+            targetSdk 31
+        }
+        pokeDex {
+            dimension 'type'
+            versionName pokedexVersionName
+            targetSdk 31
+            versionCode pokedexVersionCode
+        }
+    }
+
+
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            applicationIdSuffix '.debug'
+            versionNameSuffix "dev QA-" + QAVersion
+        }
     }
+
+
+
     kapt {
         generateStubs = true
         correctErrorTypes true
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
     }
 
@@ -55,6 +100,8 @@ android {
     androidExtensions {
         experimental = true
     }
+
+
 }
 
 dependencies {
@@ -63,8 +110,6 @@ dependencies {
     implementation project(':data')
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-
 
     implementation "com.ramotion.foldingcell:folding-cell:$foldingCellVersion"
     implementation 'com.github.bumptech.glide:glide:4.11.0'
@@ -108,7 +153,7 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
 
     //Test
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 

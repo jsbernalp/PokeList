@@ -1,19 +1,19 @@
 package com.jonathanbernal.pokelist.di
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.jonathanbernal.data.PokemonApi
 import com.jonathanbernal.data.PokemonEndPoint
-import com.jonathanbernal.data.mapper.PokemonMapper
 import com.jonathanbernal.data.repository.PokemonRepositoryImpl
 import com.jonathanbernal.domain.repository.PokemonRepository
+import com.jonathanbernal.pokelist.R
 import com.jonathanbernal.pokelist.network.PokeApiService
 import com.jonathanbernal.pokelist.viewmodel.PokemonViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.Interceptor
@@ -32,9 +32,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(@ApplicationContext context: Context, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://pokeapi.co/api/v2/")
+            .baseUrl(context.getString(R.string.base_url))
             .client(okHttpClient)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
@@ -91,7 +91,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePokemonRepository(pokemonApi: PokemonApi, pokemonMapper: PokemonMapper): PokemonRepository {
+    fun providePokemonRepository(pokemonApi: PokemonApi): PokemonRepository {
         return PokemonRepositoryImpl(pokemonApi)
     }
 
