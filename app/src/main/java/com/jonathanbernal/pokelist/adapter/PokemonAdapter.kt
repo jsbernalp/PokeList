@@ -11,12 +11,12 @@ import com.jonathanbernal.pokelist.viewmodel.PokeViewModel
 
 class PokemonAdapter internal constructor(var pokeViewModel: PokeViewModel, var resource:Int):RecyclerView.Adapter<PokemonAdapter.ViewHolder>() {
 
-    protected var pokemons: List<Pokemon> = mutableListOf()
+    private var pokemons: List<Pokemon> = mutableListOf()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
-        var binding:ViewDataBinding = DataBindingUtil.inflate(layoutInflater, viewType, parent, false)
+        val layoutInflater:LayoutInflater = LayoutInflater.from(parent.context)
+        val binding:ViewDataBinding = DataBindingUtil.inflate(layoutInflater, viewType, parent, false)
         return ViewHolder(binding)
     }
 
@@ -39,6 +39,10 @@ class PokemonAdapter internal constructor(var pokeViewModel: PokeViewModel, var 
     fun setPokemonList(pokemons: List<Pokemon>){
         this.pokemons = pokemons
         notifyDataSetChanged()
+    }
+
+    fun updatePokemon(pokemonData: Pokemon) {
+        this.pokemons.find { it.name == pokemonData.name }?.urlImage = pokemonData.urlImage
     }
 
     class ViewHolder(binding: ViewDataBinding):RecyclerView.ViewHolder(binding.root){

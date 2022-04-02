@@ -5,6 +5,8 @@ ext {
 
 buildscript {
     ext {
+
+        foldingCellVersion = '1.2.3'
         retrofitVersion = '2.8.1'
         loggingVersion = '4.5.0'
         rxAndroidVersion = '2.1.1'
@@ -14,16 +16,33 @@ buildscript {
         appCompatVersion = '1.1.0'
         constraintVersion = '1.1.0'
         materialVersion = '1.1.0'
+        //
+        okhttpVersion = '4.9.0'
+        glideVersion = '4.11.0'
+        lifecycleVersion = '2.2.0'
+        rxBindingVersion = '2.2.0'
+        materialVersion = '1.1.0-alpha10'
+        appcompat = '1.3.1'
+        constraintLayoutVersion = "2.0.2"
+        recyclerviewVersion = "1.2.1"
+        retrofitVersion = '2.9.0'
+        scanditVersion = '6.6.0'
+        daggerHiltVersion = '2.38.1'
+
     }
-    ext.kotlin_version = '1.4.10'
+    ext.kotlin_version = '1.4.31'
     repositories {
         google()
         jcenter()
-
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath "com.android.tools.build:gradle:4.1.3"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.0'
+        classpath 'com.google.firebase:firebase-appdistribution-gradle:2.2.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
